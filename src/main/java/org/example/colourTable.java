@@ -48,27 +48,27 @@ public class colourTable {
                     }
                 }
             } else {
-                throw new IllegalArgumentException("Items being added are not within proper parameters of length and / or values should be an array of 3 integers with values in the range (inclusive) of 0 -> 255");
+                throw new IllegalArgumentException("Please input an Integer array of size 3 with values between 0 and 255 inclusive");
             }
-        } catch(IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             throw new IndexOutOfBoundsException("\nCannot add any more items to the palette please remove one and try again\n" + e.getMessage());
         }
     }
 
-    public void colourTableSet(@Nullable Integer[] input, int index) {
+    public void colourTableSet(Integer[] input, int index) {
         /* Takes an integer array as input and will insert
            into the matrix in the next available spot. Will
            throw an exception if it exceeds original size set in constructor */
         try {
-            //If the input received is null set the item to null. Only used internally for delete function
-            if (input == null){
-                this.palette[index] = null;
-                return;
-            }
             if (input.length == 3 && CheckRGB(input)) {
                 if (index != this.currIndex) {
                     this.palette[index] = input;
                 } else {
+                    for (int i = index; i < paletteLength; i++) {
+                        if (palette[i] == null) {
+                            this.palette[i] = input;
+                        }
+                    }
                     for (int i = 0; i < paletteLength; i++) {
                         if (palette[i] == null) {
                             this.palette[i] = input;
@@ -76,9 +76,9 @@ public class colourTable {
                     }
                 }
             } else {
-                throw new IllegalArgumentException("Items being added are not within proper parameters of length and / or values should be an array of 3 integers with values in the range (inclusive) of 0 -> 255");
+                throw new IllegalArgumentException("Please input an Integer array of size 3 with values between 0 and 255 inclusive");
             }
-        } catch (IndexOutOfBoundsException e) {
+        }catch (IndexOutOfBoundsException e) {
             throw new IndexOutOfBoundsException("\nCannot add any more items to the palette please remove one and try again\n" + e.getMessage());
         }
     }
@@ -86,7 +86,7 @@ public class colourTable {
     public void DelColour(int index){
         /* Delete the colour from the array at a given index */
         try {
-            colourTableSet(null, index);
+            palette[index] = null;
         } catch (IndexOutOfBoundsException e) {
             throw new IndexOutOfBoundsException("\nIndex requested out of range \n" + e.getMessage());
         }
@@ -95,11 +95,15 @@ public class colourTable {
 
         /* ------------------------- Support functions ------------------------- */
         public boolean CheckRGB(Integer[] RGB){
-            for (int i = 0; i < RGB.length ; i++){
-                if ((RGB[i] < 0 || RGB[i] > 255) || i > 3) {
-                    return false;
+            try {
+                for (int i = 0; i < RGB.length; i++) {
+                    if (i > 3 || RGB[i] < 0 || RGB[i] > 255) {
+                        return false;
+                    }
                 }
+                return true;
+            } catch (IllegalArgumentException e){
+                throw new IllegalArgumentException("Please input an Integer array of size 3 with values between 0 and 255" + e.getMessage());
             }
-            return true;
         }
 }
