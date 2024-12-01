@@ -68,12 +68,12 @@ public class colourTableTest {
     public void checkRGBTest(){
         colourTable testTable = new colourTable(8);
         Integer[] testArray = new Integer[] {250, 150, 60};
-        assertTrue(testTable.CheckRGB(testArray));
+        assertTrue(testTable.checkRGB(testArray));
 
         Integer[] testArray2 = new Integer[] {270,30, 50};
-        assertFalse(testTable.CheckRGB(testArray2));
+        assertFalse(testTable.checkRGB(testArray2));
 
         Integer[] testArray3 = new Integer[] {-1,30, 50};
-        assertFalse(testTable.CheckRGB(testArray3));
+        assertFalse(testTable.checkRGB(testArray3));
     }
 }

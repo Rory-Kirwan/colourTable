@@ -1,7 +1,4 @@
 package org.example;
-
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Arrays;
 
 public class colourTable {
@@ -41,7 +38,7 @@ public class colourTable {
            into the matrix in the next available spot. Will
            throw an exception if it exceeds original size set in constructor */
         try {
-            if (input.length == 3 && CheckRGB(input)) {
+            if (input.length == 3 && checkRGB(input)) {
                 for (int i = 0 ; i < paletteLength ; i++) {
                     if (palette[i] == null) {
                         this.palette[i] = input;
@@ -60,7 +57,7 @@ public class colourTable {
            into the matrix in the next available spot. Will
            throw an exception if it exceeds original size set in constructor */
         try {
-            if (input.length == 3 && CheckRGB(input)) {
+            if (input.length == 3 && checkRGB(input)) {
                 if (index != this.currIndex) {
                     this.palette[index] = input;
                 } else {
@@ -94,10 +91,10 @@ public class colourTable {
 
 
         /* ------------------------- Support functions ------------------------- */
-        public boolean CheckRGB(Integer[] RGB){
+        public boolean checkRGB(Integer[] RGB){
             try {
-                for (int i = 0; i < RGB.length; i++) {
-                    if (i > 3 || RGB[i] < 0 || RGB[i] > 255) {
+                for (Integer integer : RGB) {
+                    if (integer < 0 || integer > 255) {
                         return false;
                     }
                 }
