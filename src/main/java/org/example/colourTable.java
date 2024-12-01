@@ -1,5 +1,7 @@
 package org.example;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Arrays;
 
 public class colourTable {
@@ -7,7 +9,6 @@ public class colourTable {
     Integer[][] palette;
     int currIndex;          // Used for keeping track of where the next index is in the array
     int paletteLength;
-    int[] availability;     // Integer array to keep track of which entries are free 0 for empty 1 for full
 
     public colourTable(int paletteLength) {
         //Write a check to make sure that the palette size is within the proper range
@@ -17,10 +18,6 @@ public class colourTable {
             //initialise with null as a default value
             this.palette = new Integer[paletteLength][3];
             Arrays.fill(palette, null);
-
-            // initialise the availability array with all 0's the same length as the palette itself
-            this.availability = new int[paletteLength];
-            Arrays.fill(availability, 0);
 
             this.currIndex = 0;
             this.paletteLength = paletteLength;
@@ -46,9 +43,8 @@ public class colourTable {
         try {
             if (input.length == 3 && CheckRGB(input)) {
                 for (int i = 0 ; i < paletteLength ; i++) {
-                    if (availability[i] == 0) {
+                    if (palette[i] == null) {
                         this.palette[i] = input;
-                        this.availability[i] = 1;
                     }
                 }
             } else {
@@ -59,20 +55,23 @@ public class colourTable {
         }
     }
 
-    public void colourTableSet(Integer[] input, int index) {
+    public void colourTableSet(@Nullable Integer[] input, int index) {
         /* Takes an integer array as input and will insert
            into the matrix in the next available spot. Will
            throw an exception if it exceeds original size set in constructor */
         try {
+            //If the input received is null set the item to null. Only used internally for delete function
+            if (input == null){
+                this.palette[index] = null;
+                return;
+            }
             if (input.length == 3 && CheckRGB(input)) {
                 if (index != this.currIndex) {
                     this.palette[index] = input;
-                    this.availability[index] = 1;
                 } else {
                     for (int i = 0; i < paletteLength; i++) {
-                        if (availability[i] == 0) {
+                        if (palette[i] == null) {
                             this.palette[i] = input;
-                            this.availability[i] = 1;
                         }
                     }
                 }
@@ -81,6 +80,15 @@ public class colourTable {
             }
         } catch (IndexOutOfBoundsException e) {
             throw new IndexOutOfBoundsException("\nCannot add any more items to the palette please remove one and try again\n" + e.getMessage());
+        }
+    }
+
+    public void DelColour(int index){
+        /* Delete the colour from the array at a given index */
+        try {
+            colourTableSet(null, index);
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexOutOfBoundsException("\nIndex requested out of range \n" + e.getMessage());
         }
     }
 
